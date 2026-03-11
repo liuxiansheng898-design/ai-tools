@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幸运数字 - 今日运势</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-600 to-purple-700 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">🔮 幸运数字</h1>
+      <p class="text-white/80">测测今天的幸运数字</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="text-center mb-6">
+        <div class="text-6xl font-bold text-purple-600 mb-2" id="number">?</div>
+        <p class="text-gray-500" id="desc">点击下方按钮获取</p>
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl mb-4">
+        🎲 抽取幸运数字
+      </button>
+
+      <div class="bg-gray-50 rounded-xl p-4">
+        <h3 class="font-bold mb-2">📊 数字含义</h3>
+        <p class="text-sm text-gray-600" id="meaning"></p>
+      </div>
+    </div>
+
+    <div class="mt-6 bg-white/20 rounded-2xl p-6 text-white">
+      <h3 class="font-bold mb-3">🎯 今日运势</h3>
+      <div id="fortune"></div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂 | 仅供娱乐</p>
+    </footer>
+  </div>
+
+  <script>
+    const meanings = {
+      1: "代表新的开始，1月1日是元旦，数字1象征着开创与领袖。",
+      2: "代表平衡与合作，阴阳相生，象征着爱情与 partnership。",
+      3: "代表创造与表达，三生万物，象征着艺术与沟通。",
+      4: "代表稳定与安全，四平八稳，象征着务实与执行。",
+      5: "代表自由与变化，五行运转，象征着冒险与探索。",
+      6: "代表和谐与责任，六六大顺，象征着家庭与关怀。",
+      7: "代表智慧与幸运，七星高照，象征着思考与灵性。",
+      8: "代表财富与成功，八方来财，象征着事业与财运。",
+      9: "代表圆满与持久，九九归一，象征着目标达成。"
+    };
+
+    const fortunes = [
+      "今天会遇到好事！保持微笑🤗",
+      "运气不错，适合做决定💪",
+      "可能会有小挑战，但能顺利度过💪",
+      "今天适合学习新东西📚",
+      "财运会上升，注意把握机会💰",
+      "人际关系运好，适合社交👥",
+      "工作/学习效率高，事半功倍⚡",
+      "保持好心情，好运自然来😊"
+    ];
+
+    function generate() {
+      const num = Math.floor(Math.random() * 99) + 1;
+      document.getElementById('number').textContent = num;
+      document.getElementById('desc').textContent = `数字 ${num} - 你的幸运数字`;
+      
+      const lastDigit = num % 10 || num % 9 || 1;
+      document.getElementById('meaning').textContent = meanings[lastDigit];
+      
+      const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+      document.getElementById('fortune').innerHTML = `
+        <p>💫 ${fortune}</p>
+        <p class="mt-2 text-sm">幸运色：紫色 | 幸运方位：东南</p>
+      `;
+    }
+  </script>
+</body>
+</html>

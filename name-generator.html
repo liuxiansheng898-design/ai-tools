@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI取名神器 - 免费起名</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-900 to-pink-900 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">✨ AI取名神器</h1>
+      <p class="text-white/70">免费生成好名字</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">👤 姓氏</label>
+        <input id="surname" type="text" placeholder="请输入姓氏" class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">🎯 性别</label>
+        <select id="gender" class="w-full border rounded-lg px-4 py-3">
+          <option value="boy">👦 男孩</option>
+          <option value="girl">👧 女孩</option>
+          <option value="both">👶 男女通用</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">🎨 风格</label>
+        <select id="style" class="w-full border rounded-lg px-4 py-3">
+          <option value="chinese">🏮 国风经典</option>
+          <option value="modern">🌟 现代简约</option>
+          <option value="poetic">📚诗意优雅</option>
+          <option value="famous">⭐ 名人同名</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">💡 期望（可选）</label>
+        <input id="wish" type="text" placeholder="如：聪明、健康、有钱" class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl">
+        🎲 开始取名
+      </button>
+
+      <div id="result" class="mt-6 hidden">
+        <h3 class="font-bold mb-3">🎉 推荐名字</h3>
+        <div id="names" class="space-y-2"></div>
+      </div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂 | 永久免费</p>
+    </footer>
+  </div>
+
+  <script>
+    const surnames = ['', '王', '李', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴', '徐', '孙', '胡', '朱', '高', '林', '何', '郭', '马'];
+
+    const boyNames = {
+      chinese: ['浩然', '子涵', '博文', '梓豪', '一鸣', '俊杰', '宇轩', '思远', '博文', '天佑', '瑞霖', '锦程', '星辰', '明轩', '志远'],
+      modern: ['晨轩', '逸凡', '思哲', '俊杰', '宇辰', '子墨', '一凡', '浩然', '明轩', '宇航'],
+      poetic: ['云帆', '星辞', '暮雪', '寒川', '惊蛰', '子夜', '北辰', '南风', '东旭', '西洲'],
+      famous: ['子丹', '博文', '志明', '继伟', '建华', '鹏飞', '浩然', '文轩', '天宇', '俊杰']
+    };
+
+    const girlNames = {
+      chinese: ['欣怡', '子涵', '诗涵', '雨晴', '思琪', '雅楠', '雨萱', '梦琪', '紫萱', '梓涵', '语萱', '欣悦', '思雨', '诗雅', '可心'],
+      modern: ['安然', '诗雅', '欣怡', '子晴', '语桐', '思雨', '雅晴', '诗晴', '雨晴', '心怡'],
+      poetic: ['南笙', '北冥', '锦瑟', '烟雨', '清欢', '半夏', '青柠', '鹿鸣', '秋水', '蒹葭'],
+      famous: ['紫薇', '晴川', '诗诗', '雅琴', '婉儿', '若曦', '素锦', '白浅', '凤九', '小乔']
+    };
+
+    function getRandom(arr, n) {
+      const shuffled = [...arr].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, n);
+    }
+
+    function generate() {
+      const surname = document.getElementById('surname').value || surnames[Math.floor(Math.random() * surnames.length)];
+      const gender = document.getElementById('gender').value;
+      const style = document.getElementById('style').value;
+      
+      let names = [];
+      if (gender === 'boy') {
+        names = getRandom(boyNames[style], 10);
+      } else if (gender === 'girl') {
+        names = getRandom(girlNames[style], 10);
+      } else {
+        names = [...getRandom(boyNames[style], 5), ...getRandom(girlNames[style], 5)];
+      }
+      
+      let html = '';
+      names.forEach((name, i) => {
+        html += `<div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+          <span class="font-bold text-lg">${surname}${name}</span>
+          <button onclick="navigator.clipboard.writeText('${surname}${name}')" class="text-purple-500 text-sm">复制</button>
+        </div>`;
+      });
+      
+      document.getElementById('names').innerHTML = html;
+      document.getElementById('result').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

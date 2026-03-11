@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI心灵鸡汤 - 每日正能量</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-yellow-500 to-orange-600 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">🍵 心灵鸡汤</h1>
+      <p class="text-white/80">每日正能量</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div id="quote" class="text-center mb-6">
+        <p class="text-xl font-bold text-gray-800 mb-4" id="text"></p>
+        <p class="text-gray-500" id="author"></p>
+      </div>
+
+      <button onclick="newQuote()" class="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-3 rounded-xl mb-4">
+        🔄 下一句
+      </button>
+
+      <button onclick="share()" class="w-full bg-gray-100 text-gray-800 font-bold py-3 rounded-xl">
+        📤 分享到朋友圈
+      </button>
+    </div>
+
+    <div class="mt-6 bg-white/20 rounded-2xl p-6 text-white">
+      <h3 class="font-bold mb-3">📖 心灵语录</h3>
+      <div class="space-y-2 text-sm" id="more"></div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂 | 永久免费</p>
+    </footer>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "生活不会辜负每一个努力的人", author: "" },
+      { text: "今天的困难，是明天成功的垫脚石", author: "" },
+      { text: "相信自己，你比想象中更强大", author: "" },
+      { text: "每一天都是新的开始", author: "" },
+      { text: "坚持就是胜利", author: "" },
+      { text: "梦想还是要有的，万一实现了呢", author: "" },
+      { text: "最大的敌人是自己", author: "" },
+      { text: "知足常乐", author: "" },
+      { text: "活在当下", author: "" },
+      { text: "善良是最好的风水", author: "" },
+      { text: "时间是最好的答案", author: "" },
+      { text: "不忘初心，方得始终", author: "" },
+      { text: "只要开始，永远不晚", author: "" },
+      { text: "努力不一定成功，但不努力一定不成功", author: "" },
+      { text: "人生没有白走的路", author: "" }
+    ];
+
+    function newQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('text').textContent = `"${quote.text}"`;
+      document.getElementById('author').textContent = quote.author || '— 每日鸡汤';
+    }
+
+    function share() {
+      const text = document.getElementById('text').textContent;
+      alert('复制成功："' + text + '" 可粘贴到朋友圈');
+    }
+
+    function init() {
+      newQuote();
+      let moreHtml = '';
+      quotes.slice(0, 5).forEach(q => {
+        moreHtml += `<p>• ${q.text}</p>`;
+      });
+      document.getElementById('more').innerHTML = moreHtml;
+    }
+
+    init();
+  </script>
+</body>
+</html>
