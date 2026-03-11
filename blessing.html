@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节日祝福生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-600 to-teal-700 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">🎊 节日祝福</h1>
+      <p class="text-white/80">一键生成节日祝福</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">节日</label>
+        <select id="festival" class="w-full border rounded-lg px-4 py-3">
+          <option value="春节">🧧 春节</option>
+          <option value="元宵节">🏮 元宵节</option>
+          <option value="情人节">❤️ 情人节</option>
+          <option value="妇女节">🌸 妇女节</option>
+          <option value="清明节">🌿 清明节</option>
+          <option value="劳动节">💪 劳动节</option>
+          <option value="母亲节">👩 母亲节</option>
+          <option value="父亲节">👨 父亲节</option>
+          <option value="端午节">🐲 端午节</option>
+          <option value="中秋节">🌙 中秋节</option>
+          <option value="国庆节">🇨🇳 国庆节</option>
+          <option value="重阳节">🌳 重阳节</option>
+          <option value="圣诞节">🎄 圣诞节</option>
+          <option value="生日">🎂 生日</option>
+          <option value="结婚纪念日">💒 纪念日</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">发给</label>
+        <select id="to" class="w-full border rounded-lg px-4 py-3">
+          <option value="父母">👨‍👩‍👧 父母</option>
+          <option value="恋人">💕 恋人</option>
+          <option value="朋友">👯 朋友</option>
+          <option value="老师">👨‍🏫 老师</option>
+          <option value="同事">👔 同事</option>
+          <option value="客户">🤝 客户</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">风格</label>
+        <select id="style" class="w-full border rounded-lg px-4 py-3">
+          <option value="温馨">❤️ 温馨感人</option>
+          <option value="幽默">😄 幽默风趣</option>
+          <option value="文艺">📚 文艺清新</option>
+          <option value="正式">💼 正式庄重</option>
+        </select>
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-4 rounded-xl mb-4">
+        🎁 生成祝福
+      </button>
+
+      <div id="result" class="hidden">
+        <div class="bg-gray-50 p-4 rounded-xl mb-4">
+          <div id="content" class="whitespace-pre-wrap"></div>
+        </div>
+        <button onclick="copy()" class="bg-green-500 text-white px-6 py-2 rounded-lg w-full">📋 一键复制</button>
+      </div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂</p>
+    </footer>
+  </div>
+
+  <script>
+    const wishes = {
+      春节: {
+        父母: { 温馨: '亲爱的爸爸妈妈新年好！过去一年您们辛苦了，新的一年祝愿您们身体健康，笑口常开！❤️', 文艺: '春风送暖入屠苏，愿父母岁岁年年皆安康～', 正式: '尊敬的父母：新年伊始，祝您们新春快乐，身体健康，万事如意！' },
+        恋人: { 温馨: '新年第一天，最想和你一起度过。新的一年，我会一直陪在你身边～', 幽默: '新年啦！陪你一起慢慢变老！', 文艺: '愿与君岁岁年年，朝朝暮暮～' }
+      },
+      情人节: {
+        父母: { 温馨: '爸爸妈妈辛苦了，爱你们！❤️' },
+        恋人: { 温馨: '遇见你是我最美的意外，情人节快乐！我爱你～', 幽默: '今天情人节，我想和你过节！', 文艺: '山水一程，三生有幸。情人节快乐，我的唯一～' },
+        朋友: { 温馨: '情人节也要开心！有你是我的福气～' }
+      },
+      生日: {
+        父母: { 温馨: '祝爸爸妈妈身体健康，天天开心！谢谢你们的爱～', 文艺: '岁月如歌，愿父母安康幸福～' },
+        恋人: { 温馨: '生日快乐！遇见你是最美好的事～', 幽默: '恭喜你又老一岁！但在我心里你最年轻～', 文艺: '时光静好，与君语；细水流年，与君同～' },
+        朋友: { 温馨: '生日快乐！愿你每天都有好心情～', 幽默: '又大一岁！赶紧约起来庆祝！' }
+      },
+      母亲节: {
+        父母: { 温馨: '妈妈，您辛苦了！我永远爱您～', 文艺: '谁言寸草心，报得三春晖。妈妈我爱你！' }
+      },
+      父亲节: {
+        父母: { 温馨: '爸爸，您是我的英雄！父亲节快乐！', 文艺: '父爱如山，永远感恩～' }
+      }
+    };
+
+    function generate() {
+      const festival = document.getElementById('festival').value;
+      const to = document.getElementById('to').value;
+      const style = document.getElementById('style').value;
+      
+      let content = '';
+      
+      if (wishes[festival] && wishes[festival][to]) {
+        content = wishes[festival][to][style] || wishes[festival][to]['温馨'];
+      } else {
+        content = `祝您${festival}快乐！`;
+      }
+      
+      document.getElementById('content').textContent = content;
+      document.getElementById('result').classList.remove('hidden');
+    }
+
+    function copy() {
+      navigator.clipboard.writeText(document.getElementById('content').textContent);
+      alert('已复制！');
+    }
+  </script>
+</body>
+</html>
