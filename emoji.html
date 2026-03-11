@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>emoji表情包生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-yellow-400 to-orange-500 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">😀 Emoji表情包</h1>
+      <p class="text-white/80">选择表情，生成表情包</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">选择情绪</label>
+        <div class="grid grid-cols-4 gap-2" id="emojis"></div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">输入文字</label>
+        <input id="text" type="text" placeholder="输入文字..." class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">背景颜色</label>
+        <div class="flex gap-2 flex-wrap">
+          <button onclick="setBg('#FF6B6B')" class="w-8 h-8 rounded-full bg-red-500"></button>
+          <button onclick="setBg('#4ECDC4')" class="w-8 h-8 rounded-full bg-teal-500"></button>
+          <button onclick="setBg('#45B7D1')" class="w-8 h-8 rounded-full bg-blue-500"></button>
+          <button onclick="setBg('#96CEB4')" class="w-8 h-8 rounded-full bg-green-400"></button>
+          <button onclick="setBg('#FFEAA7')" class="w-8 h-8 rounded-full bg-yellow-300"></button>
+          <button onclick="setBg('#DDA0DD')" class="w-8 h-8 rounded-full bg-purple-300"></button>
+          <button onclick="setBg('#FFF')" class="w-8 h-8 rounded-full bg-white border"></button>
+          <button onclick="setBg('#000')" class="w-8 h-8 rounded-full bg-black"></button>
+        </div>
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold py-4 rounded-xl mb-4">
+        🔥 生成表情包
+      </button>
+
+      <div id="result" class="hidden text-center">
+        <div id="preview" class="rounded-xl p-8 mb-4 flex items-center justify-center min-h-[200px] text-4xl font-bold text-center"></div>
+        <button onclick="download()" class="bg-green-500 text-white px-6 py-2 rounded-lg">📥 下载</button>
+      </div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂</p>
+    </footer>
+  </div>
+
+  <script>
+    const emojiList = ['😀', '😎', '🥳', '😍', '🤔', '😴', '😭', '😡', '🤯', '🥺', '🤡', '💪', '👀', '🎉', '❤️', '🔥'];
+    let currentBg = '#FF6B6B';
+    let currentEmoji = '😀';
+
+    const container = document.getElementById('emojis');
+    emojiList.forEach(e => {
+      container.innerHTML += `<button onclick="selectEmoji('${e}')" class="text-3xl p-2 hover:bg-gray-100 rounded">${e}</button>`;
+    });
+
+    function selectEmoji(e) { currentEmoji = e; }
+    function setBg(c) { currentBg = c; }
+
+    function generate() {
+      const text = document.getElementById('text').value;
+      document.getElementById('preview').innerHTML = `<div>${currentEmoji}<br>${text}</div>`;
+      document.getElementById('preview').style.background = currentBg;
+      document.getElementById('result').classList.remove('hidden');
+    }
+
+    function download() {
+      alert('截图保存即可使用！');
+    }
+  </script>
+</body>
+</html>

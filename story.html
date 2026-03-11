@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>睡前故事生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 to-purple-900 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">🌙 睡前故事</h1>
+      <p class="text-white/80">生成温馨睡前故事</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">故事主题</label>
+        <select id="theme" class="w-full border rounded-lg px-4 py-3">
+          <option value="magic">✨ 魔法奇遇</option>
+          <option value="animal">🐱 动物朋友</option>
+          <option value="adventure">🚀 冒险故事</option>
+          <option value="friendship">❤️ 友谊故事</option>
+          <option value="dream">💫 梦境奇遇</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">故事长度</label>
+        <select id="length" class="w-full border rounded-lg px-4 py-3">
+          <option value="short">📖 短篇（1分钟）</option>
+          <option value="medium">📚 中篇（3分钟）</option>
+          <option value="long">📕 长篇（5分钟）</option>
+        </select>
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl mb-4">
+        🌙 听故事
+      </button>
+
+      <div id="story" class="hidden bg-gray-50 p-4 rounded-xl mb-4">
+        <p class="leading-relaxed whitespace-pre-wrap" id="storyText"></p>
+      </div>
+
+      <button id="speakBtn" onclick="speak()" class="w-full hidden bg-blue-500 text-white font-bold py-3 rounded-xl">
+        🔊 朗读故事
+      </button>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂 | 睡前必备</p>
+    </footer>
+  </div>
+
+  <script>
+    const stories = {
+      magic: [
+        "小精灵米米的魔法羽毛\n\n在一片森林里，住着一只小精灵叫米米。她有一根神奇的魔法羽毛，只要把它插在头发里，就能实现一个愿望。\n\n一天，米米在森林里散步时，遇到了一只哭泣的小兔子。米米问：\"你怎么了？\" 小兔子说：\"我找不到回家的路了。\"\n\n米米把魔法羽毛插在头发里，说：\"让小兔子安全回家！\" 顿时，魔法羽毛闪闪发光，指引着小兔子回到了家。\n\n小兔子感激地说：\"谢谢你，米米！\" 米米笑着说：\"帮助别人是最快乐的事！\"\n\n从此，米米明白了一个道理：真正的魔法不是实现愿望，而是拥有一颗善良的心。\n\n晚安，小朋友。🌙",
+        "星星王国的礼物\n\n从前有一个星星王国，里面住着无数闪亮的小星星。每颗星星都有一个特殊的任务：守护世界上所有善良的孩子。\n\n有一天，最小的那颗星星小星发现地球上有一个小女孩正在哭泣。原来她不小心弄丢了最喜欢的玩具熊。\n\n小星决定帮助她。那天晚上，小星让所有星星都变得更亮，照亮了小女孩家的窗户。小女孩看到窗外的星光，想起了奶奶给她讲的星星的故事，她笑了。\n\n那天晚上，小女孩抱着新玩具熊睡着了。梦里，她去了星星王国旅行...晚安。🌟"
+      ],
+      animal: [
+        "小猫的友谊\n\n有一只叫小花的流浪猫，她每天在街角找食物吃。有一天，她发现了一个温暖的纸箱，里面住着一只小白狗。\n\n小白狗邀请小花一起住。起初小花有点害怕，但小白狗很友善。他们一起分享食物，一起玩耍，慢慢成为了最好的朋友。\n\n冬天来了，他们互相取暖。小花帮小白狗赶走寒冷，小白狗帮小花找食物。他们的友谊感动了附近的邻居，大家都来帮忙。\n\n最后，小花和小白狗都有了温暖的家。他们明白了一个道理：朋友是最好的礼物。\n\n晚安，宝贝。🐱",
+        "小兔子学跳舞\n\n森林里要举办舞会，所有动物都在练习跳舞。小兔子可可也想参加，但她总是跳不好。\n\n小鸟老师告诉可可：\"跳舞最重要的是相信自己。\" 可可每天练习，慢慢地，她跳得越来越好了。\n\n舞会那天，可可勇敢地走上舞台。随着音乐起舞，所有动物都为她鼓掌。\n\n可可明白了：只要努力，就能做到！晚安。🐰"
+      ],
+      adventure: [
+        "小船的旅行\n\n小水滴有一艘小小的纸船，他梦想着去大海探险。\n\n一天，风把小船吹走了。小船经过了小溪、河流，终于来到了大海。大海好大好大，小船看到了鲸鱼、海豚，还有美丽的珊瑚。\n\n小船虽然在海里显得很小，但他很勇敢。他继续向前航行，去探索更多未知的世界。\n\n也许有一天，你也能踏上属于自己的冒险之旅。晚安。⛵",
+        "勇气森林\n\n小明勇敢地走进了传说中可怕的勇气森林。他听说森林深处有一棵魔法树，只要找到它，就能获得勇气。\n\n一路上，小明遇到了各种困难：陡峭的山坡、黑暗的山洞、凶恶的大灰狼。但小明没有放弃，他 remember 他爸爸妈妈说的话：\"勇气不是不害怕，而是害怕了还继续前进。\"\n\n最后，小明找到了魔法树。魔法树说：\"你已经有勇气了，因为我看到你一路都没有放弃。\"\n\n小明开心地回家了。他明白，真正的勇气一直在他心里。晚安。🌲"
+      ],
+      friendship: [
+        "最好的朋友\n\n小熊和小狐狸是最好的朋友。他们每天都在一起玩耍：爬山、捉迷藏、找野果。\n\n有一天，小熊生病了，不能出去玩。小狐狸每天都会来看他，给他讲故事，带好吃的。\n\n小熊感动地说：\"有你这样的朋友真好！\" 小狐狸笑着说：\"好朋友就是要互相帮助！\"\n\n后来小熊好了，他们又可以一起玩了。友谊让生活更美好。晚安。🤝",
+        "分享的快乐\n\n小羊有一根好吃的棒棒糖。小猪看见了，馋得流口水。小羊把棒棒糖分成两半，和小猪一起吃。\n\n他们觉得棒棒糖变得更甜了！因为分享让快乐加倍。\n\n从那以后，小羊和小猪成了最好的朋友。晚安。🍭"
+      ],
+      dream: [
+        "彩虹桥\n\n睡觉前，小女孩看着窗外的星星。突然，一座彩虹桥从天空降落到她的窗前。\n\n小女孩走上彩虹桥，来到了一个美丽的地方：云朵王国。那里的云朵都是软绵绵的，还可以变成各种形状。\n\n云朵朋友们邀请小女孩一起玩耍。他们玩了很久...突然，小女孩听见妈妈的声音：\"起床了！\"\n\n原来是一场美梦。但小女孩记得那些快乐的感觉，这就足够了。晚安。🌈",
+        "愿望种子\n\n夜里，小男孩睡着后，手里握着的那颗种子开始发光了。\n\n种子发芽、长高，开出了一朵美丽的花。花里住着一个 tiny 的小精灵。\n\n小精灵说：\"你是个善良的孩子，我会帮你实现一个愿望。\" 小男孩想了想说：\"我希望所有小朋友都能快乐成长。\"\n\n小精灵笑着消失了。第二天，小男孩发现窗外开满了美丽的花。\n\n美梦会成真。晚安。🌸"
+      ]
+    };
+
+    function generate() {
+      const theme = document.getElementById('theme').value;
+      const list = stories[theme];
+      const story = list[Math.floor(Math.random() * list.length)];
+      document.getElementById('storyText').textContent = story;
+      document.getElementById('story').classList.remove('hidden');
+      document.getElementById('speakBtn').classList.remove('hidden');
+    }
+
+    function speak() {
+      const text = document.getElementById('storyText').textContent;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.8;
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
