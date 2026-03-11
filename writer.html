@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI写作助手 - 批量生成文章</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-900 to-purple-900 min-h-screen p-4">
+  <div class="max-w-2xl mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">✍️ AI写作助手</h1>
+      <p class="text-white/70">批量生成各类文章</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">文章类型</label>
+        <select id="type" class="w-full border rounded-lg px-4 py-3">
+          <option value="产品文案">📦 产品文案</option>
+          <option value="种草笔记">🌟 种草笔记</option>
+          <option value="朋友圈文案">📱 朋友圈文案</option>
+          <option value="短视频文案">🎬 短视频文案</option>
+          <option value="广告文案">📢 广告文案</option>
+          <option value="邮件">📧 商务邮件</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">主题/产品</label>
+        <input id="topic" type="text" placeholder="输入产品名或主题" class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">风格</label>
+        <select id="style" class="w-full border rounded-lg px-4 py-3">
+          <option value="幽默">😄 幽默风趣</option>
+          <option value="专业">💼 专业正式</option>
+          <option value="温馨">❤️ 温馨亲切</option>
+          <option value="文艺">📚 文艺清新</option>
+          <option value="种草">🌟 疯狂种草</option>
+        </select>
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-4 rounded-xl mb-4">
+        ✨ 一键生成
+      </button>
+
+      <div id="result" class="hidden">
+        <div class="bg-gray-50 p-4 rounded-xl mb-4">
+          <div id="content" class="whitespace-pre-wrap"></div>
+        </div>
+        <button onclick="copy()" class="bg-green-500 text-white px-6 py-2 rounded-lg">📋 复制</button>
+      </div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = {
+      产品文案: (t, s) => {
+        if (s === '幽默') return `【${t}】来了！
+
+朋友们！今天必须给你们安利这个${t}！
+讲真，我一开始也是拒绝的...
+但是用了之后：我去！真香！
+
+优点多到数不过来：
+✅ 颜值超高
+✅ 性价比逆天
+✅ 用了都说好
+
+别犹豫了，冲就完事儿！
+
+#${t} #好物推荐`;
+        if (s === '专业') return `${t}产品介绍
+
+一、产品概述
+${t}是一款专注于解决用户核心需求的产品。
+
+二、核心优势
+1. 技术领先
+2. 品质保证
+3. 服务完善
+
+三、适用人群
+广泛适用于各类用户群体
+
+详情请咨询官方渠道。`;
+        return `${t}——重新定义你的体验
+
+${t}，你值得拥有
+品质之选，值得信赖`;
+      },
+      种草笔记: (t, s) => {
+        if (s === '种草') return `姐妹们！今天必须给你们安利这个${t}！
+
+我用了差不多一个月了
+真的爱不释手！
+
+✅ 超级好用
+✅ 颜值超高  
+✅ 性价比绝绝子
+
+我已经回购第二个了哈哈
+
+想买的姐妹可以问我要链接！
+
+#${t} #好物种草 #真实测评`;
+        return `${t}使用分享
+
+最近入手了${t}，来分享一下使用感受~
+
+总体来说还是很不错的，
+推荐给需要的姐妹们！`;
+      },
+      短视频文案: (t, s) => {
+        if (s === '幽默') return `这${t}也太绝了吧！
+
+（配夸张表情）
+
+讲真，我第一次用的时候整个人都惊了！
+你们自己看效果！
+
+一定要看到最后！`;
+        return `${t}了解一下
+
+今天来聊聊${t}
+
+戳↓了解更多`;
+      },
+      广告文案: (t, s) => `${t}
+品质之选，值得信赖
+
+立即购买，开启品质生活
+
+#${t}`,
+      朋友圈文案: (t, s) => {
+        if (s === '温馨') return `今日份分享：${t}
+
+生活需要仪式感
+好的东西值得被发现
+
+推荐给大家～ 🫶`;
+        return `分享好物：${t}
+
+真的好用！
+姐妹们快冲！`;
+      },
+      邮件: (t, s) => `主题：关于${t}的合作
+
+尊敬的xxx：
+
+您好！
+
+我是xxx，关于${t}项目，想与您进一步沟通合作事宜。
+
+期待您的回复，谢谢！
+
+此致
+敬礼
+
+xxx
+联系方式：xxx`
+    };
+
+    function generate() {
+      const type = document.getElementById('type').value;
+      const topic = document.getElementById('topic').value || '默认主题';
+      const style = document.getElementById('style').value;
+      
+      const content = templates[type](topic, style);
+      document.getElementById('content').textContent = content;
+      document.getElementById('result').classList.remove('hidden');
+    }
+
+    function copy() {
+      navigator.clipboard.writeText(document.getElementById('content').textContent);
+      alert('已复制！');
+    }
+  </script>
+</body>
+</html>

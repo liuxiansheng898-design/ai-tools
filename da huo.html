@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>带货文案生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-500 to-red-600 min-h-screen p-4">
+  <div class="max-w-md mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">🛍️ 带货车</h1>
+      <p class="text-white/80">一键生成爆款带货文案</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">产品名称</label>
+        <input id="product" type="text" placeholder="例如：防晒霜、零食、手机壳" class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">平台</label>
+        <select id="platform" class="w-full border rounded-lg px-4 py-3">
+          <option value="小红书">📕 小红书</option>
+          <option value="抖音">🎬 抖音</option>
+          <option value="快手">📱 快手</option>
+          <option value="朋友圈">💬 朋友圈</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">痛点/卖点</label>
+        <input id="pain" type="text" placeholder="例如：防晒黑、好吃、好看" class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold py-4 rounded-xl mb-4">
+        🚀 生成带货文案
+      </button>
+
+      <div id="result" class="hidden">
+        <div class="bg-gray-50 p-4 rounded-xl mb-4">
+          <div id="content" class="whitespace-pre-wrap text-sm"></div>
+        </div>
+        <button onclick="copy()" class="bg-green-500 text-white px-6 py-2 rounded-lg w-full">📋 一键复制</button>
+      </div>
+    </div>
+
+    <div class="mt-6 bg-white/20 rounded-xl p-4 text-white text-sm">
+      <h3 class="font-bold mb-2">💡 带货小技巧</h3>
+      <p>• 开头3秒抓住注意力</p>
+      <p>• 突出真实使用感受</p>
+      <p>• 引导互动和关注</p>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂</p>
+    </footer>
+  </div>
+
+  <script>
+    function generate() {
+      const product = document.getElementById('product').value || '产品';
+      const platform = document.getElementById('platform').value;
+      const pain = document.getElementById('pain').value || '好用';
+      
+      let content = '';
+      
+      if (platform === '小红书') {
+        content = `【${product}】真的绝绝子！
+
+姐妹们！这个${product}我用了两周了
+必须来给你们种个草！
+
+✅ ${pain}
+✅ 颜值超高
+✅ 性价比 yyds
+
+讲真，之前我也觉得是智商税
+但用了之后：真香！
+
+而且现在还有活动价！
+姐妹们赶紧冲！晚了就没了！
+
+#${product} #好物种草 #真实测评`;
+      } else if (platform === '抖音') {
+        content = `这个${product}也太好用了吧！
+
+（夸张表情）
+
+家人们！今天必须给你们安利这个${product}！
+
+我用了之后整个人都惊了！
+${pain}真的不是吹的！
+
+而且现在做活动！
+赶紧去抢！手慢无！
+
+点击下方链接购买`;
+      } else if (platform === '快手') {
+        content = `老铁们！${product}来了！
+
+今天给家人们上一波${product}
+真的好用！
+${pain}！
+
+69带回家！
+赶紧秒！`;
+      } else {
+        content = `${product}了解一下～
+
+刚入手的${product}，真的好用！
+${pain}，推荐给大家！
+
+🛒购买链接：`;
+      }
+      
+      document.getElementById('content').textContent = content;
+      document.getElementById('result').classList.remove('hidden');
+    }
+
+    function copy() {
+      navigator.clipboard.writeText(document.getElementById('content').textContent);
+      alert('已复制！');
+    }
+  </script>
+</body>
+</html>
