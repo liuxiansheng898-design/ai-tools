@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小红书爆款标题生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-400 to-red-500 min-h-screen p-4">
+  <div class="max-w-xl mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white">📕 小红书爆款标题</h1>
+      <p class="text-white/80">AI生成小红书爆款标题</p>
+    </header>
+
+    <div class="bg-white rounded-2xl p-6 shadow-xl">
+      <div class="mb-4">
+        <label class="block font-bold mb-2">📝 内容主题</label>
+        <input id="topic" type="text" placeholder="例如：护肤、穿搭、美食..." class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-bold mb-2">🏷️ 话题标签</label>
+        <input id="tags" type="text" placeholder="例如：护肤、美妆" class="w-full border rounded-lg px-4 py-3">
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold py-4 rounded-xl">
+        ✨ 生成标题
+      </button>
+
+      <div id="result" class="mt-6 space-y-3 hidden"></div>
+    </div>
+
+    <footer class="text-center text-white mt-6">
+      <p>Made by 铁牛 🐂</p>
+    </footer>
+  </div>
+
+  <script>
+    const titles = [
+      "{topic} | 答应我，一定要试试！",
+      "绝了！{topic} 居然还能这样？",
+      "姐妹们！{topic} 真的哭死！",
+      "答应我，{topic} 一定要看到最后！",
+      "OMG！{topic} 也太绝了吧！",
+      "{topic} 保姆级教程，手把手教你！",
+      "救命！{topic} 怎么早没发现！",
+      "私藏已久的{topic}，今天全告诉你！",
+      "{topic} 这样做，效果翻倍！",
+      "必看！{topic} 避坑指南",
+      "吐血整理！{topic} 大全",
+      "{topic} 一个月后，我后悔了...",
+      "原来{topic} 这么简单！",
+      "打工人的{topic}，真的哭死！",
+      "学生党必看！{topic} 平价好物"
+    ];
+
+    function generate() {
+      const topic = document.getElementById('topic').value || '内容';
+      const tags = document.getElementById('tags').value || '话题';
+      
+      let results = '';
+      for (let i = 0; i < 5; i++) {
+        const title = titles[Math.floor(Math.random() * titles.length)].replace('{topic}', topic);
+        results += `<div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+          <span class="font-medium">${title}</span>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)" class="text-pink-500 text-sm">复制</button>
+        </div>`;
+      }
+      
+      results += `<div class="mt-4 text-sm text-gray-500">#${tags} #${topic} #爆款标题`;
+      
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = results;
+      resultDiv.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
