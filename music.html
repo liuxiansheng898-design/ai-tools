@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线音乐播放器 - 铁牛制作</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-black min-h-screen p-4">
+  <div class="max-w-2xl mx-auto">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-white mb-2">🎵 在线音乐播放器</h1>
+      <p class="text-white/70">输入音乐链接即可播放</p>
+    </header>
+
+    <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+      <div class="mb-4">
+        <label class="block text-white mb-2">🎵 音乐URL</label>
+        <input id="url" type="text" placeholder="输入MP3链接或搜索音乐" 
+          class="w-full bg-white/20 rounded-lg px-4 py-3 text-white">
+      </div>
+      
+      <button onclick="play()" class="w-full bg-purple-500 text-white font-bold py-3 rounded-lg mb-4">
+        ▶ 播放
+      </button>
+
+      <div id="player" class="hidden">
+        <audio id="audio" controls class="w-full mb-4">
+          您的浏览器不支持音频
+        </audio>
+        
+        <div class="flex justify-center gap-4">
+          <button onclick="audio.play()" class="bg-green-500 text-white px-4 py-2 rounded">▶</button>
+          <button onclick="audio.pause()" class="bg-red-500 text-white px-4 py-2 rounded">⏸</button>
+          <button onclick="audio.volume+=0.1" class="bg-blue-500 text-white px-4 py-2 rounded">🔊</button>
+          <button onclick="audio.volume-=0.1" class="bg-gray-500 text-white px-4 py-2 rounded">🔈</button>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <h3 class="text-white font-bold mb-3">🔥 热门推荐</h3>
+        <div class="space-y-2">
+          <button onclick="demo('relax')" class="w-full text-left bg-white/10 p-3 rounded-lg text-white hover:bg-white/20">
+            🌿 放松冥想 - 轻音乐
+          </button>
+          <button onclick="demo('focus')" class="w-full text-left bg-white/10 p-3 rounded-lg text-white hover:bg-white/20">
+            📚 专注工作 - 背景音乐
+          </button>
+          <button onclick="demo('sleep')" class="w-full text-left bg-white/10 p-3 rounded-lg text-white hover:bg-white/20">
+            😴 助眠音乐 - 白噪音
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center text-white/50 mt-6">
+      <p>Made by 铁牛 🐂 | 永久免费</p>
+    </footer>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    
+    // 示例音乐（免费版权）
+    const demos = {
+      relax: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      focus: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+      sleep: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+    };
+
+    function play() {
+      const url = document.getElementById('url').value;
+      if (url) {
+        audio.src = url;
+        audio.play();
+        document.getElementById('player').classList.remove('hidden');
+      }
+    }
+
+    function demo(type) {
+      document.getElementById('url').value = demos[type];
+      audio.src = demos[type];
+      audio.play();
+      document.getElementById('player').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
