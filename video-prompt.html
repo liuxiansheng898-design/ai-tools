@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI视频提示词生成器 - 可灵/即梦/Runway</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-black min-h-screen p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <header class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-white mb-2">🎬 AI视频提示词生成器</h1>
+      <p class="text-white/70">专为可灵、即梦、Runway、Pika设计</p>
+    </header>
+
+    <div class="bg-white/10 rounded-2xl p-6 backdrop-blur border border-white/20 text-white">
+      <!-- 场景描述 -->
+      <div class="mb-6">
+        <label class="block mb-2 text-lg">🎥 视频场景描述</label>
+        <input id="scene" type="text" placeholder="例如：一只猫在草地上奔跑，风吹动草地..." 
+          class="w-full bg-white/20 rounded-xl px-4 py-4 text-white placeholder-white/50 text-lg">
+      </div>
+
+      <!-- 运动类型 -->
+      <div class="mb-6">
+        <label class="block mb-2 text-lg">🏃 运动方式</label>
+        <select id="motion" class="w-full bg-white/20 rounded-xl px-4 py-3 text-white text-lg">
+          <option value="">随机运动</option>
+          <option value="slow motion">慢动作</option>
+          <option value="fast motion">快动作</option>
+          <option value="pan left">向左横移</option>
+          <option value="pan right">向右横移</option>
+          <option value="zoom in">推进镜头</option>
+          <option value="zoom out">拉远镜头</option>
+          <option value="orbiting">环绕运镜</option>
+          <option value="crane shot">升降镜头</option>
+          <option value="handheld">手持晃动</option>
+        </select>
+      </div>
+
+      <!-- 风格 -->
+      <div class="mb-6">
+        <label class="block mb-2 text-lg">🎭 视频风格</label>
+        <select id="style" class="w-full bg-white/20 rounded-xl px-4 py-3 text-white text-lg">
+          <option value="cinematic">🎥 电影质感</option>
+          <option value="realistic">📷 写实风格</option>
+          <option value="anime">🎨 动漫风格</option>
+          <option value="watercolor">🖌️ 水彩风格</option>
+          <option value="3d">🎮 3D动画</option>
+          <option value="documentary">📽️ 纪录片风格</option>
+        </select>
+      </div>
+
+      <!-- 质量 -->
+      <div class="mb-6">
+        <label class="block mb-2 text-lg">✨ 质量参数</label>
+        <select id="quality" class="w-full bg-white/20 rounded-xl px-4 py-3 text-white text-lg">
+          <option value="4k,high quality">4K 超高清</option>
+          <option value="8k,ultra hd">8K 超高清</option>
+          <option value="cinematic,film grain">电影胶片</option>
+          <option value="hq,detailed">高质量细节</option>
+        </select>
+      </div>
+
+      <button onclick="generate()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-4 rounded-xl font-bold text-lg hover:opacity-90">
+        🎬 生成视频提示词
+      </button>
+
+      <div id="result" class="mt-6 p-4 bg-white/10 rounded-xl hidden">
+        <p class="text-sm text-gray-300 mb-2">英文提示词（推荐）：</p>
+        <p id="prompt" class="text-lg text-white mb-4"></p>
+        <p class="text-sm text-gray-300 mb-2">中文提示词：</p>
+        <p id="promptCN" class="text-lg text-white mb-4"></p>
+        <button onclick="copy()" class="bg-green-500 px-4 py-2 rounded-lg text-white">📋 复制英文</button>
+      </div>
+    </div>
+
+    <footer class="text-center text-white/50 mt-8">
+      <p>Made by 铁牛 🐂 | 永久免费</p>
+    </footer>
+  </div>
+
+  <script>
+    const styles = {
+      cinematic: {en: "cinematic video, dramatic lighting, film grain, 35mm lens", cn: "电影质感视频，戏剧性光照，胶片颗粒，35mm镜头"},
+      realistic: {en: "realistic style, natural lighting, high detail, 4k", cn: "写实风格，自然光照，高清细节，4K画质"},
+      anime: {en: "anime style, vibrant colors, smooth animation, Japanese animation", cn: "动漫风格，色彩鲜艳，动作流畅，日系动画"},
+      watercolor: {en: "watercolor animation style, soft colors, flowing movement", cn: "水彩动画风格，柔和色彩，流动动作"},
+      "3d": {en: "3D animation, CGI, Pixar style, detailed textures", cn: "3D动画，CGI，皮克斯风格，精细纹理"},
+      documentary: {en: "documentary style, handheld camera, natural light, real footage", cn: "纪录片风格，手持摄影，自然光，记录画面"}
+    };
+
+    function generate() {
+      const scene = document.getElementById('scene').value || "[场景描述]";
+      const motion = document.getElementById('motion').value;
+      const styleKey = document.getElementById('style').value;
+      const quality = document.getElementById('quality').value;
+      
+      const style = styles[styleKey];
+      const motionText = motion ? `, ${motion}` : '';
+      
+      const en = `${scene}${motionText}, ${style.en}, ${quality}, smooth camera movement, professional editing`;
+      const cn = `${scene}，${motion?motion+'，':''}${style.cn}，${quality}，平滑镜头运动，专业剪辑`;
+      
+      document.getElementById('prompt').textContent = en;
+      document.getElementById('promptCN').textContent = cn;
+      document.getElementById('result').classList.remove('hidden');
+    }
+
+    function copy() {
+      navigator.clipboard.writeText(document.getElementById('prompt').textContent);
+      alert('已复制！');
+    }
+  </script>
+</body>
+</html>
